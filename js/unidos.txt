@@ -1,0 +1,93 @@
+ function Add(){
+	var client = JSON.stringify({
+		ID    : $("#txtNombre").val(),
+		Name  : $("#txtDireccion").val(),
+		Phone : $("#txtCelular").val()
+	});
+	tbClients.push(client);
+	localStorage.setItem("tbClients", JSON.stringify(tbClients));
+	alert("The data was saved.");
+	console.log( "se guardo un item en el array");
+	return true;
+} 
+
+$("#frmDatos").bind("submit",function(){
+	console.log( "voy a hacer " +operation);
+	if(operation == "A")
+	{
+		console.log("llamando a agregar");
+		return Add();
+		}
+	else
+		return Edit();		
+}); 
+
+function List(){		
+	$("#tblList").html("");
+	$("#tblList").html(
+		"<thead>"+
+		"	<tr>"+
+		"	<th></th>"+
+		"	<th>Nombre</th>"+
+		"	<th>Direccion</th>"+
+		"	<th>Celular</th>"+
+		"	</tr>"+
+		"</thead>"+
+		"<tbody>"+
+		"</tbody>"
+		);
+	for(var i in tbClients){
+		var cli = JSON.parse(tbClients[i]);
+	  	$("#tblList tbody").append("<tr>"+
+								 	 "	<td><img src='edit.png' alt='Edit"+i+"' class='btnEdit'/><img src='delete.png' alt='Delete"+i+"' class='btnDelete'/></td>" + 
+									 "	<td>"+cli.Nombre+"</td>" + 
+									 "	<td>"+cli.Direccion+"</td>" + 
+									 "	<td>"+cli.Celular+"</td>" + 
+	  								 "</tr>");
+	}
+}
+ $( document ).ready(function() {
+        console.log( "documento cargado" );
+		var operation = "A"; //"A"=Adding; "E"=Editing
+		var selected_index = -1; //Index of the selected list item
+		var tbClients = localStorage.getItem("tbClients");//Retrieve the stored data
+		tbClients = JSON.parse(tbClients); //Converts string to object
+		if(tbClients == null) //inicializar
+				tbClients = [];
+		console.log( "variables  inicializadas"+tbClients );
+});
+
+
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/crud_local_storage.js"></script>
+</head>
+<body>
+	<form id="frmDatos">
+		<ul>
+			<li>
+				<label for="txtID">Nombre:</label>
+				<input type="text" id="txtNombre"/>
+			</li>
+			<li>
+				<label for="txtName">Direccion</label>
+				<input type="text" id="txtDireccion"/>
+			</li>
+			<li>
+				<label for="txtPhone">Celular:</label>
+				<input type="text" id="txtCelular"/>
+			</li>
+			<li>
+				<input type="submit" value="Save" id="btnSave"/>
+			</li>
+		</ul>
+	</form>
+
+	<table id="tblList">
+
+	</table>
+</body>
+</html> 
